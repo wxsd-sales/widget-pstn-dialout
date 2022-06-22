@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <link rel="stylesheet" href="https://code.s4d.io/widget-space/production/main.css">
+    <script crossorigin src="https://unpkg.com/webex/umd/webex.min.js"></script>
+    <script src="https://code.s4d.io/widget-space/production/bundle.js"></script>
+</head>
+<body>
+    <div id="my-webex-widget" style="width:500px;height:500px;"></div>
+    <script>
+      
+      //'Customer' Token in this case.
+      let token = 'ACCESS_TOKEN';
+      let spaceId = 'ROOM_ID';
+      let phoneNumber = '+13215555555'
+
+      // Initialize an SDK instance
+      credentials = {logger: {level: "debug"}, credentials:{ access_token: token }};
+      const webexSDK = (window.webexSDK = Webex.init(credentials));
+
+      let globalSipUri = null;
+      let primaryMeeting = null;
+
+      var widgetEl = document.getElementById('my-webex-widget');
+      // Initialize a new space widget
+      webex.widget(widgetEl).spaceWidget({
+        accessToken: token,
+        destinationId: spaceId,
+        destinationType: 'spaceId',
+        spaceActivities: {"files":true,"meet":true,"message":true,"people":true},
+        initialActivity: 'meet',
+        secondaryActivitiesFullWidth: false,
+        composerActions: {"attachFiles":true},
+        disablePresence: false,
+        disableFlags: false
+      });
+
+      // Listens for messages in the space
+      webex.widget(widgetEl).on('messages:created', function(e) {
+        console.log("messages:created:");
+        console.log(e.data.text);
+      });
+
+      // sync the meetings- this will update our SDK instance to include the meeting/call that was created in the widget (inboound or outbound).
+      function syncMeetings(){
+        webexSDK.meetings.syncMeetings().then(function(){
+          let meetings = webexSDK.meetings.getAllMeetings();
+          console.log('synced meetings array:');
+          console.log(meetings);
+          if(Object.keys(meetings).length == 0){
+            setTimeout(() => {
+              syncMeetings();
+            }, "3000")
+          } else {
+            // after we sync let's iterate over all of our meetings to look for the new one that was just "created" in the widget.
+            for(let m of Object.keys(meetings)){
+              console.log(meetings[m]);
+              // if the meeting matches the one that was just created, then:
+              // (Note, this only works if everything happening is in the same org, otherwise the sipUri will look different and we'll need to comment out this conditional)
+              if(meetings[m].sipUri == globalSipUri){
+                console.log("SipUris match, placing PSTN call now!");
+                primaryMeeting = meetings[m];
+                // Invite a PSTN to join the widget call.
+                primaryMeeting.invite({"phoneNumber":phoneNumber})
+              }
+            }
+          }
+        })
+      }
+
+      // Listen for a new call (in or out), and then sync the new meeting with our SDK instance.
+      webex.widget(widgetEl).on('calls:created', function(e) {
+        console.log("calls:created:");
+        console.log(e);
+        globalSipUri = e.data.call.sipUri;
+        console.log(`globalSipUri: ${globalSipUri}`);
+        syncMeetings();
+      });
+    </script>
+</body>
+</html> 
