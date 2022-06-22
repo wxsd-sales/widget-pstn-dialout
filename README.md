@@ -1,11 +1,11 @@
 # Widget PSTN Dialout
-This is repo serves as an example of how you can use functionality of the Webex Browser SDK (like the ```.invite()``` function) in conjunction with the Webex Widget.
+This is repo serves as an example of how you can use functionality of the [Webex Browser SDK](https://developer.webex.com/docs/sdks/browser) (like the ```.invite()``` function) in conjunction with the Webex Widget.
 
 ## Overview
 
 In some cases, the Webex [Widget](https://developer.webex.com/docs/widgets) may be ideal for a demo or Proof of Concept application, because it is much easier to implement than the Browser SDK.  The main reason for this, is that the widget comes with many UI components built in already.  If your app needs to use even one function of the SDK, then that could mean that your entire app needs to utilize the SDK, in order to be able to access that one function.  
 
-In this project, we show that you can implement the Widget and the SDK in the same web app, so that you can still leverage the widget for your UI components, and use the SDK for any functions that don't exist in the widget, but do exist in the SDK.
+In this project, we show that you can implement the Widget and the SDK in the same web app, so that you can still leverage the widget for your UI components, and use the SDK for [any functions](https://webex.github.io/webex-js-sdk/api/) that don't exist in the widget, but do exist in the SDK.
 
 1. In widget_pstn_dialout.html, we init the widget and the SDK.  
 2. Then, we listen for a new call to be "created" in the widget (which happens when the user clicks the button to join the space meeting).
