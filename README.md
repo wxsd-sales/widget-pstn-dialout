@@ -13,12 +13,12 @@ In this project, we show that you can implement the Widget and the SDK in the sa
 4. Once the SDK has synced, we can perform a function of the SDK on the meeting.  In this case, we .invite() a PSTN to join the ongoing meeting.
 
 
-## Requirements
-
-No special requirements.  Simply follow the instructions in the next section.
-
 ## Setup
 
+### Prerequisites & Dependencies: 
+No special requirements.  Simply follow the instructions in the next section.
+
+### Installation and Usage:
 You will need to replace the following variables with actual values (currently lines 13 - 15 in the .html file):
 ```
       let token = 'ACCESS_TOKEN';
@@ -33,6 +33,13 @@ https://developer.webex.com/docs/api/v1/rooms
 
 Then, you can simply open this HTML file in a supported web browser.
 
+## License
+All contents are licensed under the MIT license. Please see [license](LICENSE) for details.
+
+
+## Disclaimer
+<!-- Keep the following here -->  
+ Everything included is for demo and Proof of Concept purposes only. Use of the site is solely at your own risk. This site may contain links to third party content, which we do not warrant, endorse, or assume liability for. These demos are for Cisco Webex usecases, but are not Official Cisco Webex Branded demos.
 
 ## Support
 
